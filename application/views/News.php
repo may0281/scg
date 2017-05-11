@@ -79,9 +79,7 @@
 					</ul>
 
 					<ul class="crumb-buttons">
-						<li><a href="<?php echo base_url(); ?>news/Add" title=""><i class="icon-plus"></i><span>ADD CONTENT</span></a></li>
-						<li><a href="<?php echo base_url(); ?>news/Add" title=""><i class="icon-plus"></i><span>ADD TYPE</span></a></li>
-
+						<li><a href="<?php echo base_url(); ?>news/add" title=""><i class="icon-plus"></i><span>ADD CONTENT</span></a></li>
 					</ul>
 				</div>
 
@@ -113,8 +111,7 @@
 									<thead>
 										<tr>
 											<th>ID</th>
-											<th>Enable</th>
-											
+
 											<th>Cover Img </th>
 											<th>Type</th>
 											<th>TITLE</th>
@@ -131,18 +128,14 @@
 										
 										<tr>
 											<td><?php echo $i;?></td>
-											<td class="checkbox-column">
-												<input type="checkbox" class="uniform" onchange="OnChangeCheckbox (this)" id="myCheckbox" <?php if($r['status']==1){ echo "checked";}?>   value="<?php echo $r['id'];?>" />	
-												</div>
-											</td>
 											
 											<td>
-											<img src='<?php echo $domain[0]."images/".$r['image'];?>' width="150"></td>
-											<td><?php echo $r['type'];?></td>
-											<td><?php echo $r['title'];?></td>
+											<img src='<?php echo $domain[0]."images/img_news/".$r['photo_new'];?>' width="150"></td>
+											<td><?php echo $type[$r['type_new']];?></td>
+											<td><?php echo $r['title_new'];?></td>
 											
-											<td data-hide="phone,tablet"><a href="<?php echo base_url(); ?>news/edit/<?php echo $r['id']; ?>" title="Edit news">Edit </a></td>
-											<td data-hide="phone,tablet"><a href="<?php echo base_url(); ?>news/del/<?php echo $r['id']; ?>" title="Edit news">Del </a></td>
+											<td data-hide="phone,tablet"><a href="<?php echo base_url(); ?>news/edit/<?php echo $r['id_new']; ?>" title="Edit news">Edit </a></td>
+											<td data-hide="phone,tablet"><a href="<?php echo base_url(); ?>news/del/<?php echo $r['id_new']; ?>" title="Edit news">Del </a></td>
 										</tr>
 										<?php $i++; }?>
 									</tbody>

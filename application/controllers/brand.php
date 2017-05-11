@@ -109,5 +109,24 @@ class brand extends CI_Controller {
         }
 
     }
-	
+
+    public function clear_new()
+    {
+        foreach(glob('../images/img_news/*.*') as $filename) {
+            $dub = explode('/',$filename);
+            echo $dub[3]. '<br>';
+
+            $sql = "select id_new from tb_new where photo_new = '".$dub[3] ."'";
+            $query_pixi = $this->db->query($sql);
+
+            if($query_pixi->result_array() == null)
+            {
+                echo 'NULL';
+                unlink("../images/img_news/".$dub[3]);
+            }else{
+                print_r($query_pixi->result_array());
+            }
+
+        }
+    }
 }

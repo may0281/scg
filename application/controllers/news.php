@@ -13,159 +13,96 @@ class news extends CI_Controller
 		$this->load->library('resize');
 		$this->load->model('news_model');
 		$this->load->view('template/left');
-
+        $this->type_news = array(
+            1 => 'ป้ายแดงต่างประเทศ',
+            2 => 'ข่าวสารรถยนต์',
+            3 => 'กิจกรรมเพื่อสังคม',
+            4 => 'ข่าวสาร Hot car',
+        );
 	}
 
 	public function index()
 	{
 		$data['q'] = $this->news_model->all();
+		$data['type'] = $this->type_news;
 		$this->load->view('News',$data);
 	}
     public function add($type)
     {
-        $data['type_list'] = $this->news_model->getNewsType();
+
+        $data['type_list'] = $this->type_news;
         $this->load->view('template/left');
         $this->load->view('NewsAdd',$data);
     }
+    public function add_action()
+    {
+        $CoverImage = null;
+        if($_FILES['coverimg']['name']) //check file upload
+        {
+            $dest = "../images/img_news/";
+            $CoverImage = strtotime(date("Y-m-d H:i:s")) . '.' . $this->resize->filetype($_FILES['coverimg']['type']);
+            $this->upload($dest, $CoverImage, 'coverimg');
+        }
+        $data = $this->input->post();
+        $more = array(
+            'photo_new'=> $CoverImage,
+            'date_new' => date('Y-m-d'),
+            'time_new' => date('H:i:s'),
+            );
+        $data = array_merge($data,$more);
+        $this->news_model->insert($data);
+        echo "<script>alert('Success!!');window.location.assign('".base_url()."news/');</script>";
+
+    }
     public function edit($id)
     {
-        if($id) {
-            $data['type_list'] = $this->news_model->getNewsType();
-            $data['gallery'] = $this->news_model->SelectGallery($id);
-            $data['news'] = $this->news_model->SelectNewsById($id);
-            if($data['news']){
-                $this->load->view('template/left');
-                $this->load->view('NewsEdit', $data);
-            }else{
-                echo "<script>alert('ระบบเกิดข้อผิดพลาด กรุณาลองไหม่อีกครั้ง');window.location.assign('".base_url()."news/');</script>";
-            }
+        if($id == null )
+        {
+            echo  "<script>alert('ระบบเกิดข้อผิดพลาด กรุณาลองไหม่อีกครั้ง');window.location.assign('".base_url()."news/');</script>";
+        }
+        $data['type_list'] = $this->type_news;
+        $data['news'] = $this->news_model->SelectNewsById($id);
+        if($data['news']){
+            $this->load->view('template/left');
+            $this->load->view('NewsEdit', $data);
         }else{
             echo "<script>alert('ระบบเกิดข้อผิดพลาด กรุณาลองไหม่อีกครั้ง');window.location.assign('".base_url()."news/');</script>";
-
         }
     }
     public function edit_action()
     {
         if($_FILES['coverimg']['name']) //check file upload
         {
-            unlink("../images/".$this->input->post('coverimg_old'));
-            unlink("../images/Thumbnails/".$this->input->post('coverimg_old'));
-            $dest = "../images/";
+            unlink("../images/img_news/".$this->input->post('coverimg_old'));
+            $dest = "../images/img_news";
             $CoverImage = strtotime(date("Y-m-d H:i:s")).'.'.$this->resize->filetype($_FILES['coverimg']['type']);
             $this->upload($dest,$CoverImage,'coverimg');
-            $sourcefile = $dest.$CoverImage;
-            $destfile = $dest.'Thumbnails/'.$CoverImage;
-            $this->resize($sourcefile,800,600,$destfile);
+
         }else{
             $CoverImage = $this->input->post('coverimg_old');
         }
-
-
-
-        $data = array(
-            'type_id' => $this->input->post('type'),
-            'title' => $this->input->post('title'),
-            'description' => $this->input->post('description'),
-            'video' => $this->input->post('video'),
-            'image' => $CoverImage,
+        $data = $this->input->post();
+        $more = array(
+            'photo_new'=> $CoverImage,
+            'date_new' => date('Y-m-d'),
+            'time_new' => date('H:i:s'),
         );
-        $this->news_model->updateNews($this->input->post('id'),$data);
-        if (isset($_FILES['my_file'])) {
-            $myFile = $_FILES['my_file'];
-            $fileCount = count($myFile["name"]);
-            for ($j = 0; $j < $fileCount; $j++) {
-                $array_last=explode(".",$myFile["name"][$j]);
-                $c=count($array_last)-1;
-                $lastname=strtolower($array_last[$c]) ;
-                $img =  $j.strtotime(date("Y-m-d H:i:s")).".".$lastname;
-                $fileupload=$myFile["tmp_name"][$j];
-                if ($lastname=="jpg" or $lastname=="png" or $lastname=="gif") //จำกัดนามสกุลไฟล์ที่จะ upload ได้
-                {
-                    copy($fileupload,"../images/".$img);
-                    $data_gallery = array(
-                        'new_id' => $this->input->post('id') ,
-                        'image' => $img,
-                        'created_at' => date('Y-m-d H:i:s'),
-                    );
-                    $this->car_model->insertgallery($data_gallery);
-                }
-            }
-        }
-        $del = $this->input->post('del');
-        if($del){
-            foreach($del as $d)
-            {
-                $exp = explode('&', $d);
-                $this->db->delete('gallery', array('id' => $exp[0]));
-                unlink("../images/".$exp[1]);
+        $data = array_merge($data,$more);
+        $this->news_model->updateNews($this->input->post('id_new'),$data);
 
-            }
-        }
         echo "<script>alert('Success!!');window.location.assign('".base_url()."news/');</script>";
 
     }
-    public function add_action()
-    {
-        if($_FILES['coverimg']['name']) //check file upload
-        {
-            $dest = "../images/";
-            $CoverImage = strtotime(date("Y-m-d H:i:s")) . '.' . $this->resize->filetype($_FILES['coverimg']['type']);
-            $this->upload($dest, $CoverImage, 'coverimg');
-            $sourcefile = $dest . $CoverImage;
-            $destfile = $dest . 'Thumbnails/' . $CoverImage;
-            $this->resize($sourcefile, 800, 600, $destfile);
-        }
 
-        $data = array(
-            'type_id' => $this->input->post('type'),
-            'title' => $this->input->post('title'),
-            'description' => $this->input->post('description'),
-            'video' => $this->input->post('video'),
-            'image' => $CoverImage,
-            'created_at' => date('Y-m-d H:i:s'),
-            'status'=> 1
-        );
-        $news_id = $this->news_model->insert($data);
-        if (isset($_FILES['my_file'])) {
-            $myFile = $_FILES['my_file'];
-            $fileCount = count($myFile["name"]);
-            for ($j = 0; $j < $fileCount; $j++) {
-                $array_last=explode(".",$myFile["name"][$j]);
-                $c=count($array_last)-1;
-                $lastname=strtolower($array_last[$c]) ;
-                $img =  $j.strtotime(date("Y-m-d H:i:s")).".".$lastname;
-                $fileupload=$myFile["tmp_name"][$j];
-                if ($lastname=="jpg" or $lastname=="png" or $lastname=="gif") //จำกัดนามสกุลไฟล์ที่จะ upload ได้
-                {
-                    copy($fileupload,"../images/".$img);
-                    $data_gallery = array(
-                        'new_id' => $news_id ,
-                        'image' => $img,
-                        'created_at' => date('Y-m-d H:i:s'),
-                    );
-                    $this->car_model->insertgallery($data_gallery);
-                }
-            }
-        }
-        
-        echo "<script>alert('Success!!');window.location.assign('".base_url()."news/');</script>";
-
-    }
 	public function del($id)
 	{
-		$sql ="select * from news where id = '".$id."' ";
+		$sql ="select * from tb_new where id_new = '".$id."' ";
 		$query = $this->db->query($sql);
 		foreach($query->result_array() as $arr){
-			unlink("../images/".$arr['image']);
-			unlink("../images/Thumbnails/".$arr['image']);
+			unlink("../images/img_news/".$arr['photo_new']);
 		}
-		$sqlgallery ="select * from gallery where new_id = '".$id."' ";
-		$query_gallery = $this->db->query($sqlgallery);
-		foreach($query_gallery->result_array() as $arr_gallery){
-			unlink("../images/".$arr_gallery['image']);
-		}
-		$this->db->delete('news', array('id' => $id));
-		$this->db->delete('gallery', array('new_id' => $id));
+
+		$this->db->delete('tb_new', array('id_new' => $id));
 		echo "<script>window.location.assign('".base_url()."news/');</script>";
 	}
     public function enable($checked,$id)

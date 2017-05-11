@@ -114,11 +114,11 @@
                                         </label>
 										<div class="col-md-9">
 
-											<select name="type" class="col-md-12 select2 full-width-fix required">
+											<select name="type_new" class="col-md-12 select2 full-width-fix required">
 
-												<?php foreach ($type_list as $ty) {?>
-												<option value="<?php echo $ty['id']; ?>" <?php if($ty['id']==$data['type_id']){?> selected="selected" <?php } ?> >
-                                                    <?php echo $ty['title']; ?>
+												<?php foreach ($type_list as $ty => $name) {?>
+												<option value="<?php echo $ty; ?>" <?php if($data['type_new']==$ty){?> selected="selected" <?php } ?> >
+                                                    <?php echo $name; ?>
                                                 </option>
 												<?php } ?>
 											</select>
@@ -128,55 +128,27 @@
 									<div class="form-group">
 										<label class="col-md-3 control-label">หัวข้อข่าว <span class="required">*</span></label>
 										<div class="col-md-9">
-											<input type="text" value="<?php echo $data['title'];?>" name="title" class="form-control required">
+											<input type="text" value="<?php echo $data['title_new'];?>" name="title_new" class="form-control required">
 										</div>
 									</div>
 
 									<div class="form-group">
 										<label class="col-md-3 control-label">รูปภาพหลัก<span class="required">*</span></label>
 										<div class="col-md-9">
-                                            <img src="<?php echo $domain[0];?>images/<?php echo $data['image'];?>" width="250"> <br><br>
+                                            <img src="<?php echo $domain[0];?>images/img_news/<?php echo $data['photo_new'];?>" width="250"> <br><br>
                                             <input type="file" name="coverimg" class="" accept="image/*" data-style="fileinput" data-inputsize="medium">
-                                            <input type="hidden" name="coverimg_old" value="<?php echo $data['image'];?>" >
+                                            <input type="hidden" name="coverimg_old" value="<?php echo $data['photo_new'];?>" >
 										</div>
 									</div>
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">Gallery </label>
-                                        <div class="col-md-9">
-                                            <?php $i=1;foreach ($gallery as $g) { ?>
-                                                <div class="col-md-3">
-                                                    <img src="<?php echo $domain[0];?>images/<?php echo $g['image'];?>" width='200'>
-                                                    <label class="checkbox"><input type="checkbox" name="del[]" value="<?php echo $g['id']."&".$g['image'];?>" class=""> Delete </label>
-                                                </div>
-                                                <?php if($i==4 or $i==8 or $i==12 or $i==16){?><div style="clear:both"></div><?php } ?>
-                                                <?php $i++; } ?>
-                                        </div>
-                                        <div style="clear:both;height:20px;"></div>
-                                        <label class="col-md-3 control-label">Add more </label>
-                                        <!-- ..........1.......... -->
-                                        <div class="col-md-9">
-                                            <input type="file" name="my_file[]" multiple  class="form-control" accept="image/*" data-inputsize="medium">
-                                            <p class="help-block">Images only (image/*)</p>
-                                            <label for="gal1" class="has-error help-block" generated="true" style="display:none;"></label>
-                                        </div>
-                                    </div>									
+
 									<div class="form-group">
 										<label class="col-md-3 control-label">รายละเอียดข่าว :</label>
-										<div class="col-md-9"><textarea  name="description" id="editor" > <?php echo $data['description'];?></textarea></div>
-									</div>
-									<div class="form-group">
-										<label class="col-md-3 control-label">วีดีโอ <span class="required">*</span></label>
-										<div class="col-md-9">
-											<input type="text" value="<?php echo $data['video'];?>" name="video" class="form-control required">
-											<label for="gal1" class="has-error help-block" generated="true">
-												ตัวอย่าง https://www.youtube.com/watch?v=2fngvQS_PmQ
-											</label>
-										</div>
+										<div class="col-md-9"><textarea  name="detail_new" id="editor" > <?php echo $data['detail_new'];?></textarea></div>
 									</div>
 
 
 									<div class="form-actions">
-										<input type="hidden" name='id' value="<?php echo $data['id'];?>">
+										<input type="hidden" name='id_new' value="<?php echo $data['id_new'];?>">
 										<input type="submit" value="INSERT" class="btn btn-primary pull-right">
 									</div>
 								</form>
