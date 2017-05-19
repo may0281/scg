@@ -119,13 +119,15 @@ class slide extends CI_Controller {
         }
         $this->image_lib->clear();
     }
+
     public function example($id){
         if($id > 5){
             redirect(base_url());
         }
         $this->load->view('example/ex_'.$id);
     }
-    public function delete($id){
+
+    public function del($id){
         if($id == null){
             redirect(base_url());
         }

@@ -11,9 +11,6 @@ class news_model extends ci_model
 
 	public function all()
 	{
-        $this->db->query('SET character_set_connection=\'tis620\'');
-        $this->db->query('SET character_set_results=\'tis620\'');
-        $this->db->query('SET character_set_client=\'tis620\'');
         $this->db->select('*');
         $this->db->from('tb_new');
         $this->db->order_by('id_new','desc');

@@ -60,14 +60,18 @@
 			<!-- /Top Left Menu -->
 		</div>
 	</header> <!-- /.header -->
-<?php  $path = substr($_SERVER["REQUEST_URI"],13);  $subpath[2] = null; $subpath = explode('/', $path);
-		$s_path_1 = null;
-		$s_path_2 = null;
-		$s_path_3 = null;
-		$subpath = explode('/', $path);
-		if(isset($subpath[2])){
-			$s_path_3 = $subpath[2];
-		}
+<?php
+
+$path = explode('/',$_SERVER["REQUEST_URI"]);
+if(empty($path[4]))
+{
+    $path[4] = null;
+}
+if(empty($path[3]))
+{
+    $path[3] = null;
+}
+
 
 ?>
 	<div id="container">
@@ -75,45 +79,45 @@
 			<div id="sidebar-content">
 				<!--=== Navigation ===-->
 				<ul id="nav">
-					<li <?php if($path=='dashboard'){echo "class='current'";} ?>>
+					<li <?php if($path[2]=='dashboard'){echo "class='current'";} ?>>
 						<a href="<?php echo base_url();?>dashboard">
 							<i class="icon-dashboard"></i>
 							Dashboard
 						</a>
 					</li>
-					<li class="<?php if($subpath[0]=='car'){echo "current open";} ?>">
+					<li class="<?php if($path[2]=='car'){echo "current open";} ?>">
 						<a href="javascript:void(0);">
 							<i class="icon-table"></i>
 							Car
 						</a>
 						<ul class="sub-menu">
 							
-							<li class="<?php if($subpath[1]=='brand'){echo "current";} ?>">
+							<li class="<?php if($path[3]=='brand'){echo "current";} ?> ">
 								<a href="<?php echo base_url();?>car/brand">
 								<i class="icon-angle-right"></i>
 								Brand
 								</a>
 							</li>
-                            <li class="<?php if($subpath[1].'/'.$s_path_3=='list/newcar'){echo "current";} ?>">
+                            <li class="<?php if($path[3].'/'.$path[4]=='list/New-car'){echo "current";} ?> ">
                                 <a href="<?php echo base_url();?>car/list/New-car">
                                     <i class="icon-angle-right"></i>
                                     New Car List
                                 </a>
                             </li>
-							<li class="<?php if($subpath[1].'/'.$s_path_3=='list/Used-car'){echo "current";} ?>">
+							<li class="<?php if($path[3].'/'.$path[4]=='list/usedcar'){echo "current";} ?>">
 								<a href="<?php echo base_url();?>car/list/usedcar">
 									<i class="icon-angle-right"></i>
 									Used Car List 
 								</a>
 							</li>
-                            <li class="<?php if($subpath[1].'/'.$s_path_3=='list/Importing'){echo "current";} ?>">
+                            <li class="<?php if($path[3].'/'.$path[4]=='list/importcar'){echo "current";} ?>">
 								<a href="<?php echo base_url();?>car/list/importcar">
 									<i class="icon-angle-right"></i>
 									Import Car List
 								</a>
 							</li>
 
-                            <li class="<?php if($subpath[1]=='add'){echo "current";} ?>">
+                            <li class="<?php if($path[3]=='add'){echo "current";} ?>">
                                 <a href="<?php echo base_url();?>car/add">
                                     <i class="icon-angle-right"></i>
                                     Add New Car
@@ -122,55 +126,19 @@
 							
 						</ul>
 					</li>
-					<li class="<?php if($subpath[0]=='slide'){echo "current";} ?>">
+					<li class="<?php if($path[2]=='slide'){echo "current";} ?>">
 						<a href="<?php echo base_url();?>slide/">
 							<i class="icon-edit"></i>
 							Slide
 						</a>
 					</li>
-					<li class="<?php if($subpath[0]=='news'){echo "current";} ?>">
+					<li class="<?php if($path[2]=='news'){echo "current";} ?>">
 						<a href="<?php echo base_url();?>news/">
 							<i class="icon-edit"></i>
 							News
 						</a>
 					</li>
-					<li class="<?php if($subpath[0]=='celebrate'){echo "current";} ?>">
-						<a href="<?php echo base_url();?>celebrate">
-							<i class="icon-table"></i>
-							Celebrate
-						</a>
-					</li>
-					<li class="<?php if($subpath[0]=='service'){echo "current";} ?>">
-						<a href="<?php echo base_url();?>service">
-							<i class="icon-table"></i>
-							Service
-						</a>
 
-					<li class="<?php if($subpath[0]=='part'){echo "current";} ?>">
-						<a href="<?php echo base_url();?>part">
-							<i class="icon-table"></i>
-							Part
-						</a>
-					</li>
-					<li class="<?php if($subpath[0]=='offer'){echo "current";} ?>">
-						<a href="<?php echo base_url();?>offer">
-							<i class="icon-table"></i>
-							Offer
-						</a>
-					</li>
-					<li class="<?php if($subpath[0]=='offer'){echo "accessory";} ?>">
-						<a href="<?php echo base_url();?>accessory">
-							<i class="icon-table"></i>
-							Accessory
-						</a>
-					</li>
-					
-					<li>
-						<a href="https://developers.facebook.com/tools/debug/og/object/">
-							<i class="icon-facebook"></i>
-							Facebook Debugger
-						</a>
-					</li>
 				</ul>			
 				<!-- /Navigation -->
 				<div class="sidebar-widget align-center">

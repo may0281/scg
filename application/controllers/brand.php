@@ -129,4 +129,40 @@ class brand extends CI_Controller {
 
         }
     }
+
+    public function setUtf8New()
+    {
+        $this->db->query('SET character_set_connection=\'tis620\'');
+        $this->db->query('SET character_set_results=\'tis620\'');
+        $this->db->query('SET character_set_client=\'tis620\'');
+        $this->db->select('*');
+        $this->db->from('tb_new');
+        $query_pix = $this->db->get();
+        echo '<pre>';
+        foreach ($query_pix->result_array() as $arr)
+        {
+            var_dump($arr);
+            $this->updateutf8news($arr);
+
+        }
+    }
+
+    public function updateutf8news($arr)
+    {
+
+        $data = array(
+                'title_new' => $arr['title_new'],
+                'detail_new' => $arr['detail_new'],
+                'type_new' => $arr['type_new'],
+                'photo_new' => $arr['photo_new'],
+                'date_new' => $arr['date_new'],
+                'time_new' => $arr['time_new'],
+            );
+        $this->db->query('SET character_set_connection=\'utf8\'');
+        $this->db->query('SET character_set_results=\'utf8\'');
+        $this->db->query('SET character_set_client=\'utf8\'');
+        $this->db->where('id_new',$arr['id_new']);
+        $this->db->update('tb_new', $data);
+    }
+
 }

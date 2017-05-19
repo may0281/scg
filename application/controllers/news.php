@@ -88,6 +88,7 @@ class news extends CI_Controller
             'time_new' => date('H:i:s'),
         );
         $data = array_merge($data,$more);
+        unset($data['coverimg_old']);
         $this->news_model->updateNews($this->input->post('id_new'),$data);
 
         echo "<script>alert('Success!!');window.location.assign('".base_url()."news/');</script>";
@@ -122,7 +123,6 @@ class news extends CI_Controller
         if ( ! $this->upload->do_upload($field))
         {
             return array('error' => $this->upload->display_errors());
-
         }
         else
         {
