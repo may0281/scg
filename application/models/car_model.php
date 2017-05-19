@@ -87,12 +87,12 @@ class car_model extends ci_model
 	}
 	public function NewCarList($type)
 	{
-        $this->db->select('car_all.Car_Status,car_all.Car_Id,Car_all.Car_Condition,Car_all.Car_Body,car_brand.Name_Brand,car_model.Name_Type as model');
+        $this->db->select('car_all.Car_Status,car_all.Car_Id,car_all.Car_Condition,car_all.Car_Body,car_brand.Name_Brand,car_model.Name_Type as model');
         $this->db->from('car_all');
         $this->db->join('car_brand', 'car_all.Car_Brand = car_brand.Id_Brand','left');
         $this->db->join('car_model', 'car_all.Car_Model = car_model.Id_Type','left');
-		$this->db->where('Car_all.Car_Condition', $type);
-		$this->db->order_by('Car_all.Car_Id', 'desc');
+		$this->db->where('car_all.Car_Condition', $type);
+		$this->db->order_by('car_all.Car_Id', 'desc');
 		$query = $this->db->get();
 		return $query->result_array();
 	}
